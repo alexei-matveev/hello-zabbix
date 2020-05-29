@@ -46,6 +46,18 @@ spec:
         - name: "MYSQL_DATABASE"
           value: "zabbix"
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server
+spec:
+  type: ClusterIP
+  selector:
+    component: zabbix-server
+  ports:
+  - port: 10050
+    targetPort: 10050
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -150,16 +162,4 @@ spec:
   ports:
   - port: 3306
     targetPort: 3306
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: zabbix-server
-spec:
-  type: ClusterIP
-  selector:
-    component: zabbix-server
-  ports:
-  - port: 10050
-    targetPort: 10050
 ...
