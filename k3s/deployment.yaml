@@ -1,10 +1,11 @@
 #
 # kubectl apply -k .
 #
-# See Zabbix [1] and Docker Hub [2].
+# See Zabbix [1] and Docker Hub Pages for Server [2], Frontend [3].
 #
 # [1] https://www.zabbix.com/container_images
 # [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
+# [3] https://hub.docker.com/r/zabbix/zabbix-web-apache-mysql
 #
 apiVersion: apps/v1
 kind: Deployment
@@ -44,6 +45,59 @@ spec:
           value: "zabbix"
         - name: "MYSQL_DATABASE"
           value: "zabbix"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: zabbix-frontend
+  template:
+    metadata:
+      labels:
+        component: zabbix-frontend
+    spec:
+      containers:
+        # docker run --name some-zabbix-web-apache-mysql -e
+        # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
+        # -e MYSQL_PASSWORD="some-password" -e
+        # ZBX_SERVER_HOST="some-zabbix-server" -e
+        # PHP_TZ="some-timezone" -d zabbix/zabbix-web-apache-mysql:tag
+      - name: zabbix-frontend
+        image: zabbix/zabbix-web-apache-mysql:centos-5.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "PHP_TZ"
+          value: "Europe/Berlin"
+        - name: "ZBX_SERVER_HOST"
+          value: "zabbix-server"
+        - name: "DB_SERVER_HOST"
+          value: "zabbix-db"
+        - name: "DB_SERVER_PORT"
+          value: "3306"
+        - name: "MYSQL_USER"
+          value: "zabbix"
+        - name: "MYSQL_PASSWORD"
+          value: "zabbix"
+        - name: "MYSQL_DATABASE"
+          value: "zabbix"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-frontend
+spec:
+  type: ClusterIP
+  selector:
+    component: zabbix-frontend
+  ports:
+  - port: 80
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
