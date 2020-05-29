@@ -62,8 +62,13 @@ spec:
         ports:
         - containerPort: 10050
         env:
+          # For "Server" & "ServerActive" Config Lines:
         - name: "ZBX_SERVER_HOST"
-          value: "127.0.0.1" # for "Server" Config Option to accept requests.
+          value: "127.0.0.1"
+          # agent.hostname  =  system.hostname  by  default  which  is
+          # random in Kubernetes. Unless you set it here:
+        - name: "ZBX_HOSTNAME"
+          value: "Zabbix server"
 ---
 apiVersion: v1
 kind: Service
