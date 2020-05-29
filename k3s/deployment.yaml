@@ -35,6 +35,7 @@ spec:
           value: "zabbix-db"
         - name: "DB_SERVER_PORT"
           value: "3306"
+          # MySQL Root is used to create the user & database:
         - name: "MYSQL_ROOT_PASSWORD"
           value: "root"
         - name: "MYSQL_USER"
@@ -75,12 +76,14 @@ spec:
         env:
         - name: "MYSQL_ROOT_PASSWORD"
           value: "root"
-        - name: "MYSQL_USER"
-          value: "zabbix"
-        - name: "MYSQL_PASSWORD"
-          value: "zabbix"
-        - name: "MYSQL_DATABASE"
-          value: "zabbix"
+          # Let the Zabbix Startup Procedure create the DB, avoid
+          # collation issues:
+        # - name: "MYSQL_USER"
+        #   value: "zabbix"
+        # - name: "MYSQL_PASSWORD"
+        #   value: "zabbix"
+        # - name: "MYSQL_DATABASE"
+        #   value: "zabbix"
 ---
 apiVersion: v1
 kind: Service
