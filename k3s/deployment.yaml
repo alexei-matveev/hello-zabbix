@@ -24,6 +24,11 @@ spec:
       labels:
         component: zabbix-server
     spec:
+      # Volumes used by some or all containers of the Pod:
+      volumes:
+      - name: "zabbix-db"
+        persistentVolumeClaim:
+          claimName: "zabbix-db"
       containers:
       - name: zabbix-server
         # docker run --name some-zabbix-server-mysql -e
@@ -34,6 +39,9 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10051
+        volumeMounts:
+        - mountPath: "/zabbix-db" # unused
+          name: "zabbix-db"
         env:
         - name: "DB_SERVER_HOST"
           value: "zabbix-db"
