@@ -1,0 +1,55 @@
+#
+# kubectl apply -k .
+#
+# See Docker Hub [1].
+#
+# [1] https://hub.docker.com/r/zabbix/zabbix-server-mysql
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: zabbix-server
+  template:
+    metadata:
+      labels:
+        component: zabbix-server
+    spec:
+      containers:
+        # docker run --name some-zabbix-server-mysql -e
+        # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
+        # -e MYSQL_PASSWORD="some-password" -d
+        # zabbix/zabbix-server-mysql:tag
+      - name: zabbix-server
+        image: zabbix/zabbix-server-mysql:centos-5.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 10050
+        env:
+        - name: "DB_SERVER_HOST"
+          value: "zabbix-db"
+        - name: "DB_SERVER_PORT"
+          value: "3306"
+        - name: "MYSQL_USER"
+          value: "zabbix"
+        - name: "MYSQL_PASSWORD"
+          value: "zabbix"
+        - name: "MYSQL_DATABASE"
+          value: "zabbix"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server
+spec:
+  type: ClusterIP
+  selector:
+    component: zabbix-server
+  ports:
+  - port: 10050
+    targetPort: 10050
+...
