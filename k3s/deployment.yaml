@@ -1,9 +1,10 @@
 #
 # kubectl apply -k .
 #
-# See Docker Hub [1].
+# See Zabbix [1] and Docker Hub [2].
 #
-# [1] https://hub.docker.com/r/zabbix/zabbix-server-mysql
+# [1] https://www.zabbix.com/container_images
+# [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
 #
 apiVersion: apps/v1
 kind: Deployment
@@ -34,12 +35,64 @@ spec:
           value: "zabbix-db"
         - name: "DB_SERVER_PORT"
           value: "3306"
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "root"
         - name: "MYSQL_USER"
           value: "zabbix"
         - name: "MYSQL_PASSWORD"
           value: "zabbix"
         - name: "MYSQL_DATABASE"
           value: "zabbix"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: zabbix-db
+  template:
+    metadata:
+      labels:
+        component: zabbix-db
+    spec:
+      containers:
+        # docker run --name some-mysql -e
+        # MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+        #
+        # With  v8.0  it my  happen  thata  the older  clients  cannot
+        # connect  because of  the  changed default  by password  hash
+        # algo.  Use  v5.7.  The CentOS based  zabbix server container
+        # image brings an older mysqladmin and likely other tools.
+        #
+      - name: zabbix-db
+        image: mysql:5.7.30
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        env:
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "root"
+        - name: "MYSQL_USER"
+          value: "zabbix"
+        - name: "MYSQL_PASSWORD"
+          value: "zabbix"
+        - name: "MYSQL_DATABASE"
+          value: "zabbix"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-db
+spec:
+  type: ClusterIP
+  selector:
+    component: zabbix-db
+  ports:
+  - port: 3306
+    targetPort: 3306
 ---
 apiVersion: v1
 kind: Service
