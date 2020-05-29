@@ -4,6 +4,14 @@
 # See Zabbix  [1] and Docker Hub  Pages for Server [2],  Frontend [3],
 # Agent [4], and MySQL [5].
 #
+# FIXME:  there is  suspected race  condition.  Zabbix  Server startup
+# script checks if the  DB & DB user already exist  in order to create
+# them  when  necessary.   Without  Permanent Storage  for  MySQL  you
+# probably better  off starting or  RE-starting the Zabbix  Server Pod
+# after MySQL  is already running. It  basically boils down to  --- do
+# not delete the DB when Zabbix Server ist already running. If you did
+# anyway --- restart Zabbix Server Pod.
+#
 # [1] https://www.zabbix.com/container_images
 # [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
 # [3] https://hub.docker.com/r/zabbix/zabbix-web-apache-mysql
@@ -24,11 +32,6 @@ spec:
       labels:
         component: zabbix-server
     spec:
-      # Volumes used by some or all containers of the Pod:
-      volumes:
-      - name: "zabbix-db"
-        persistentVolumeClaim:
-          claimName: "zabbix-db"
       containers:
       - name: zabbix-server
         # docker run --name some-zabbix-server-mysql -e
@@ -39,9 +42,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10051
-        volumeMounts:
-        - mountPath: "/zabbix-db" # unused
-          name: "zabbix-db"
         env:
         - name: "DB_SERVER_HOST"
           value: "zabbix-db"
@@ -158,6 +158,11 @@ spec:
       labels:
         component: zabbix-db
     spec:
+      # Volumes used by some or all containers of the Pod:
+      volumes:
+      - name: "zabbix-db"
+        persistentVolumeClaim:
+          claimName: "zabbix-db"
       containers:
         # docker run --name some-mysql -e
         # MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
@@ -172,6 +177,9 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
+        volumeMounts:
+        - mountPath: "/zabbix-db" # unused
+          name: "zabbix-db"
         env:
         - name: "MYSQL_ROOT_PASSWORD"
           value: "root"
