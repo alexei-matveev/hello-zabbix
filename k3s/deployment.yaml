@@ -1,13 +1,14 @@
 #
 # kubectl apply -k .
 #
-# See Zabbix [1] and Docker Hub Pages for Server [2], Frontend [3] and
-# Agent [4].
+# See Zabbix  [1] and Docker Hub  Pages for Server [2],  Frontend [3],
+# Agent [4], and MySQL [5].
 #
 # [1] https://www.zabbix.com/container_images
 # [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
 # [3] https://hub.docker.com/r/zabbix/zabbix-web-apache-mysql
 # [4] https://hub.docker.com/r/zabbix/zabbix-agent
+# [5] https://hub.docker.com/_/mysql
 #
 apiVersion: apps/v1
 kind: Deployment
@@ -206,4 +207,21 @@ spec:
       - backend:
           serviceName: zabbix-frontend
           servicePort: 80
+---
+# https://github.com/rancher/local-path-provisioner
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # When you  dont specify  storage class at  all the  default storage
+  # class may be chosen. In k3s with local-path provisioner it is also
+  # the  default one.  Omitted  storageClassName is  not  the same  as
+  # storageClassName = "".
+  # storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
 ...
