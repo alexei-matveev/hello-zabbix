@@ -1,11 +1,13 @@
 #
 # kubectl apply -k .
 #
-# See Zabbix [1] and Docker Hub Pages for Server [2], Frontend [3].
+# See Zabbix [1] and Docker Hub Pages for Server [2], Frontend [3] and
+# Agent [4].
 #
 # [1] https://www.zabbix.com/container_images
 # [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
 # [3] https://hub.docker.com/r/zabbix/zabbix-web-apache-mysql
+# [4] https://hub.docker.com/r/zabbix/zabbix-agent
 #
 apiVersion: apps/v1
 kind: Deployment
@@ -22,11 +24,11 @@ spec:
         component: zabbix-server
     spec:
       containers:
+      - name: zabbix-server
         # docker run --name some-zabbix-server-mysql -e
         # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
         # -e MYSQL_PASSWORD="some-password" -d
         # zabbix/zabbix-server-mysql:tag
-      - name: zabbix-server
         image: zabbix/zabbix-server-mysql:centos-5.0.1
         imagePullPolicy: IfNotPresent
         ports:
@@ -45,6 +47,23 @@ spec:
           value: "zabbix"
         - name: "MYSQL_DATABASE"
           value: "zabbix"
+      - name: zabbix-agent
+        #
+        # The  default  Zabbix DB  already  containes  one Host  named
+        # "Zabbix  Server" at  localhost:10050,  so we  also start  an
+        # agent for the server to talk to.
+        #
+        # docker run --name some-zabbix-agent -e
+        # ZBX_HOSTNAME="some-hostname" -e
+        # ZBX_SERVER_HOST="some-zabbix-server" -d
+        # zabbix/zabbix-agent:tag
+        image: zabbix/zabbix-agent:centos-5.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 10050
+        env:
+        - name: "ZBX_SERVER_HOST"
+          value: "127.0.0.1" # for "Server" Config Option to accept requests.
 ---
 apiVersion: v1
 kind: Service
