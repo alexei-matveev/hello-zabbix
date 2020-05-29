@@ -30,7 +30,7 @@ spec:
         image: zabbix/zabbix-server-mysql:centos-5.0.1
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 10050
+        - containerPort: 10051
         env:
         - name: "DB_SERVER_HOST"
           value: "zabbix-db"
@@ -55,8 +55,8 @@ spec:
   selector:
     component: zabbix-server
   ports:
-  - port: 10050
-    targetPort: 10050
+  - port: 10051
+    targetPort: 10051
 ---
 apiVersion: apps/v1
 kind: Deployment
