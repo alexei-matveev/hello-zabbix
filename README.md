@@ -11,3 +11,6 @@ Install Zabbix in Kubernetes
     $ kubectl create namespace hello-zabbix
     $ kubectl config set-context --current --namespace=hello-zabbix
     $ kubectl apply -k k3s/
+
+Then  visit the  [URL](https://zabbix.localhost).   The default  Admin
+password is "zabbix".
