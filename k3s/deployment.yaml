@@ -162,4 +162,24 @@ spec:
   ports:
   - port: 3306
     targetPort: 3306
+---
+#
+# We  assume here  that  *.localhost resolves  to  the local  machine.
+# Following URL should be directed to corresponding Service, also with
+# https:// protocoll:
+#
+#     http://zabbix.localhost
+#
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: zabbix
+spec:
+  rules:
+  - host: zabbix.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: zabbix-frontend
+          servicePort: 80
 ...
