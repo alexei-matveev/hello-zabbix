@@ -4,13 +4,18 @@
 # See Zabbix  [1] and Docker Hub  Pages for Server [2],  Frontend [3],
 # Agent [4], and MySQL [5].
 #
-# NOTS:  there is  potential  race condition.   Zabbix Server  startup
+# NOTE 1:  there is potential  race condition.  Zabbix  Server startup
 # script checks if the  DB & DB user already exist  in order to create
 # them when necessary.  Especially without permanent storage for MySQL
 # you probably  better off starting  or RE-starting the  Zabbix Server
 # Pod after MySQL is already running.  It basically boils down to: "do
-# not delete  the DB when Zabbix  Server ist already running".  If you
+# not delete the  DB when Zabbix Server ist already  running".  If you
 # did anyway --- restart Zabbix Server Pod.
+#
+# NOTE  2: There  is likely  another race  condition. PV  Creation and
+# MySQL  Initializing the  DB  files. At  least once  I  had to  scale
+# replicas = 0  in zabbix-db deployment and delete DB  files on the pv
+# to clean up.
 #
 # [1] https://www.zabbix.com/container_images
 # [2] https://hub.docker.com/r/zabbix/zabbix-server-mysql
