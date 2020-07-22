@@ -44,6 +44,7 @@ spec:
         # -e MYSQL_PASSWORD="some-password" -d
         # zabbix/zabbix-server-mysql:tag
         image: zabbix/zabbix-server-mysql:centos-5.0.2
+        #mage: registry.gitlab.com/f0bec0d/hello-zabbix:0.0.4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10051
