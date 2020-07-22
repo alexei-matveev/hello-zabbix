@@ -1,4 +1,5 @@
-# See .gitlab-ci.yml
+# Hm, the  shell from the shebang  line #!/bin/sh is not  found in the
+# kaniko debug image! See .gitlab-ci.yml
 echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
 
 /kaniko/executor --context $CI_PROJECT_DIR \
