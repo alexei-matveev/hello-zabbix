@@ -6,6 +6,6 @@ build:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
-    - ./gitlab-ci.sh
+    - $CI_PROJECT_DIR/gitlab-ci.sh
   only:
     - tags
