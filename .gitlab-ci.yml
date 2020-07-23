@@ -1,4 +1,11 @@
-# https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+#
+# GitLab  Doku mentions  Kaniko  es  one way  to  builf Docker  Images
+# [1].  FIXME: There  seems to  be  the usual  problem with  corporate
+# firwalls and HTTP Proxies [2].
+#
+# [1] https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+# [2] https://github.com/GoogleContainerTools/kaniko/issues/432
+#
 build:
   stage: build
   # Debug version, because we need a shell apparently:
