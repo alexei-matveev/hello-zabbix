@@ -1,5 +1,8 @@
 FROM zabbix/zabbix-server-mysql:centos-5.0.2
 
+# Debug Proxy config:
+RUN env
+
 # Yum install  would not  work as  "zabbix", there is  no sudo  in the
 # image. Become root:
 USER root

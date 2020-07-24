@@ -11,8 +11,13 @@
 # hardwire your  corporate in  the source  code.  See  also predefined
 # variables [2].
 #
+# The next Problem  will be that the Docker RUN  commands such as "yum
+# install  -y ..."  will  not be  able  to get  to  the Intrnets,  see
+# --build-arg below [3].
+#
 # [1] https://docs.gitlab.com/ee/ci/variables/#create-a-custom-variable-in-the-ui
 # [2] https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+# [3] https://github.com/GoogleContainerTools/kaniko/issues/713
 #
 
 #DONT: export HTTPS_PROXY="http://...:3128"
@@ -25,4 +30,6 @@ echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"passwor
 
 /kaniko/executor --context $CI_PROJECT_DIR \
                  --dockerfile $CI_PROJECT_DIR/Dockerfile \
-                 --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+                 --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG \
+                 --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+                 --build-arg NO_PROXY="$NO_PROXY"
