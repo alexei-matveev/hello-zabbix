@@ -32,9 +32,6 @@ echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"passwor
 /kaniko/executor --context $CI_PROJECT_DIR \
                  --dockerfile $CI_PROJECT_DIR/Dockerfile \
                  --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG \
-                 --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
                  --build-arg https_proxy="$HTTPS_PROXY" \
-                 --build-arg HTTP_PROXY="$HTTP_PROXY" \
                  --build-arg http_proxy="$HTTP_PROXY" \
-                 --build-arg NO_PROXY="$NO_PROXY" \
                  --build-arg no_proxy="$NO_PROXY"
