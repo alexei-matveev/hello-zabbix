@@ -4,9 +4,11 @@
 # shell is instaled as /busybox/sh there, likely intentionally.
 #
 # When pulling  external base Images  Kaniko may  need a proxy  set in
-# HTTPS_PROXY  env var.   Configur this  in  GitLab UI  -> Project  ->
-# Settings -> CI/CD -> Variables [1].  It would be probably a bad idea
-# to hardwire your corporate in  the source code.  See also predefined
+# HTTPS_PROXY & NO_PROXY  env vars.  NO_PROXY should  at least contain
+# the domain of your GitLab Instance for  the runner (?) to be able to
+# clone the repo.  Configure this in  GitLab UI -> Project -> Settings
+# ->  CI/CD ->  Variables [1].   It would  be probably  a bad  idea to
+# hardwire your  corporate in  the source  code.  See  also predefined
 # variables [2].
 #
 # [1] https://docs.gitlab.com/ee/ci/variables/#create-a-custom-variable-in-the-ui
@@ -14,6 +16,7 @@
 #
 
 #DONT: export HTTPS_PROXY="http://...:3128"
+#DONT: export NO_PROXY="example.com"
 
 echo "=== ENVIRONMENT ==="
 env
