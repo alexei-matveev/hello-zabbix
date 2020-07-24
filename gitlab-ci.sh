@@ -4,7 +4,7 @@
 # shell is instaled as /busybox/sh there, likely intentionally.
 #
 # When pulling  external base Images  Kaniko may  need a proxy  set in
-# HTTPS_PROXY & NO_PROXY  env vars.  NO_PROXY should  at least contain
+# HTTPS_PROXY, HTTP_PROXY & NO_PROXY  env vars.  NO_PROXY should  at least contain
 # the domain of your GitLab Instance for  the runner (?) to be able to
 # clone the repo.  Configure this in  GitLab UI -> Project -> Settings
 # ->  CI/CD ->  Variables [1].   It would  be probably  a bad  idea to
@@ -12,8 +12,9 @@
 # variables [2].
 #
 # The next Problem  will be that the Docker RUN  commands such as "yum
-# install  -y ..."  will  not be  able  to get  to  the Intrnets,  see
-# --build-arg below [3].
+# install  -y ..."   will not  be  able to  get to  the Intrnets,  see
+# --build-arg below  [3]. For some  reason "yum" still  uses "http://"
+# URLs and will require properly set HTTP_PROXY too.
 #
 # [1] https://docs.gitlab.com/ee/ci/variables/#create-a-custom-variable-in-the-ui
 # [2] https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
@@ -32,4 +33,5 @@ echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"passwor
                  --dockerfile $CI_PROJECT_DIR/Dockerfile \
                  --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG \
                  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+                 --build-arg HTTP_PROXY="$HTTP_PROXY" \
                  --build-arg NO_PROXY="$NO_PROXY"
