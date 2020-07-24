@@ -14,5 +14,5 @@ build:
     entrypoint: [""]
   script:
     - $CI_PROJECT_DIR/gitlab-ci.sh
-  only:
-    - tags
+# only:
+#   - tags
