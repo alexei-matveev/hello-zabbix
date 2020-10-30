@@ -244,7 +244,7 @@ spec:
         # FIXME: why cannot I make it work with real zabbix_agent2?
         # Also where are v5.2 images?
         #
-        image: zabbix/zabbix-agent:centos-5.2.0 # C-agent, not Go-agent!
+        image: zabbix/zabbix-agent:centos-5.0.5 # C-agent, not Go-agent!
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
