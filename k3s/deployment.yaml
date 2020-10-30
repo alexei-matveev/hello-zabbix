@@ -246,7 +246,8 @@ spec:
         # zabbix/zabbix-agent2:tag
         #
         # FIXME: why cannot I make it work with real zabbix_agent2?
-        # Also where are v5.2 images?
+        # Also where are v5.2 images?  See the issue
+        # https://github.com/zabbix/zabbix-docker/issues/758
         #
         image: zabbix/zabbix-agent:centos-5.2.0 # C-agent, not Go-agent!
         imagePullPolicy: IfNotPresent
