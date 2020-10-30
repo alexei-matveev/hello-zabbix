@@ -241,10 +241,11 @@ spec:
         # ZBX_SERVER_HOST="some-zabbix-server" -d
         # zabbix/zabbix-agent2:tag
         #
-        # FIXME: why cannot I make it work with real zabbix_agent2?
-        # Also where are v5.2 images?
+        # In  LTS  branch there  seems  to  be  a working  version  of
+        # zabbix_agent2.
         #
-        image: zabbix/zabbix-agent:centos-5.0.5 # C-agent, not Go-agent!
+        image: zabbix/zabbix-agent2:alpine-5.0.4 # Go-agent
+        #image: zabbix/zabbix-agent:centos-5.0.5 # C-agent
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
