@@ -46,7 +46,7 @@ spec:
         # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
         # -e MYSQL_PASSWORD="some-password" -d
         # zabbix/zabbix-server-mysql:tag
-        image: zabbix/zabbix-server-mysql:centos-5.2.0
+        image: zabbix/zabbix-server-mysql:centos-5.2.1
         #mage: registry.gitlab.com/f0bec0d/hello-zabbix:0.0.4
         imagePullPolicy: IfNotPresent
         ports:
@@ -75,7 +75,7 @@ spec:
         # ZBX_HOSTNAME="some-hostname" -e
         # ZBX_SERVER_HOST="some-zabbix-server" -d
         # zabbix/zabbix-agent:tag
-        image: zabbix/zabbix-agent:centos-5.2.0
+        image: zabbix/zabbix-agent:centos-5.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
@@ -124,7 +124,7 @@ spec:
         # ZBX_SERVER_HOST="some-zabbix-server" -e
         # PHP_TZ="some-timezone" -d zabbix/zabbix-web-apache-mysql:tag
       - name: zabbix-frontend
-        image: zabbix/zabbix-web-apache-mysql:centos-5.2.0
+        image: zabbix/zabbix-web-apache-mysql:centos-5.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -249,7 +249,7 @@ spec:
         # Also where are v5.2 images?  See the issue
         # https://github.com/zabbix/zabbix-docker/issues/758
         #
-        image: zabbix/zabbix-agent:centos-5.2.0 # C-agent, not Go-agent!
+        image: zabbix/zabbix-agent:centos-5.2.1 # C-agent, not Go-agent!
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
