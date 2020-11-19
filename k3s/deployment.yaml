@@ -274,13 +274,19 @@ spec:
         - containerPort: 10050
         env:
           # Specify ZBX_SERVER_HOST  to set "Server"  & "ServerActive"
-          # Config Lines.  FIXME: Note  that the iptables voodoo makes
-          # it practivally  impossible to determine the  source IP for
-          # the packets that  will come with the  server passive check
+          # Config  Lines.  Note  that  the iptables  voodoo makes  it
+          # practically impossible to determine  the source IP for the
+          # packets  that  will come  with  the  server passive  check
           # requests.  So  you are  basically left with  active checks
           # only or a very permissive Server directive.
         - name: "ZBX_SERVER_HOST"
           value: "zabbix-server"
+          # ...    Unless   you   define   ZBX_PASSIVESERVERS   and/or
+          # ZBX_ACTIVESERVERS  explicitely.   FIXME:  this  is  *very*
+          # permissive and  likely break in Clusters  with non-default
+          # CIDRs:
+        - name: "ZBX_PASSIVESERVERS"
+          value: "10.42.0.0/16"
           # agent.hostname  =  system.hostname  by  default  which  is
           # random in Kubernetes. Unless you set it here:
         - name: "ZBX_HOSTNAME"
