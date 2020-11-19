@@ -83,6 +83,10 @@ spec:
           # For "Server" & "ServerActive" Config Lines:
         - name: "ZBX_SERVER_HOST"
           value: "127.0.0.1"
+          # Unless you define PASSIVE/ACTIVESERVERS
+          # explicitely. FIXIME: this is *very* permissive:
+        - name: "ZBX_PASSIVESERVERS"
+          value: "10.42.0.0/16"
           # agent.hostname  =  system.hostname  by  default  which  is
           # random in Kubernetes. Unless you set it here:
         - name: "ZBX_HOSTNAME"
