@@ -100,6 +100,23 @@ spec:
   - port: 10051
     targetPort: 10051
 ---
+# Cluster  Service  "zabbix-agent"  will  be  directed  to  Pod  named
+# "zabbix-server".  Confusing, yes, but this  is necessary if you want
+# to access the agent by a DNS  Name other than localhost. Try echo ""
+# /dev/tcp/zabbix-server/10050  ... FIXME:  maybe we  should just  add
+# more ports to the svc/zabbix-server?
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-agent
+spec:
+  type: ClusterIP
+  selector:
+    component: zabbix-server
+  ports:
+  - port: 10050
+    targetPort: 10050
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
