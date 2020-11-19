@@ -80,11 +80,13 @@ spec:
         ports:
         - containerPort: 10050
         env:
-          # For "Server" & "ServerActive" Config Lines:
+          # For "Server" & "ServerActive" Config Lines ...
         - name: "ZBX_SERVER_HOST"
           value: "127.0.0.1"
-          # Unless you define PASSIVE/ACTIVESERVERS
-          # explicitely. FIXIME: this is *very* permissive:
+          # ...    Unless   you   define   ZBX_PASSIVESERVERS   and/or
+          # ZBX_ACTIVESERVERS  explicitely.   FIXME:  this  is  *very*
+          # permissive and  likely break in Clusters  with non-default
+          # CIDRs:
         - name: "ZBX_PASSIVESERVERS"
           value: "10.42.0.0/16"
           # agent.hostname  =  system.hostname  by  default  which  is
