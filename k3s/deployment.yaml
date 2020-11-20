@@ -88,17 +88,18 @@ spec:
         - name: "ZBX_HOSTNAME"
           value: "Zabbix server"
 ---
+# With a Headless Service the name will resolve to the Pod IP:
 apiVersion: v1
 kind: Service
 metadata:
   name: zabbix-server
 spec:
   type: ClusterIP
+  # Forcing  IP to  None for  a Headless  Service may  cause an  error
+  # saying the field is immutable if the Service already exists:
+  clusterIP: "None"
   selector:
     component: zabbix-server
-  ports:
-  - port: 10051
-    targetPort: 10051
 ---
 apiVersion: apps/v1
 kind: Deployment
