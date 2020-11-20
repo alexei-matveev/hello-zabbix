@@ -84,11 +84,12 @@ spec:
         - name: "ZBX_SERVER_HOST"
           value: "127.0.0.1"
           # ...    Unless   you   define   ZBX_PASSIVESERVERS   and/or
-          # ZBX_ACTIVESERVERS  explicitely.   FIXME:  this  is  *very*
-          # permissive and  likely break in Clusters  with non-default
-          # CIDRs:
+          # ZBX_ACTIVESERVERS   explicitly.   It    is   likely   that
+          # "zabbix-server" will only resolve to  the source IP of the
+          # Pod  if  the  Service   named  "zabbix-server"  remains  a
+          # Headless Server:
         - name: "ZBX_PASSIVESERVERS"
-          value: "10.42.0.0/16"
+          value: "127.0.0.1,zabbix-server"
           # agent.hostname  =  system.hostname  by  default  which  is
           # random in Kubernetes. Unless you set it here:
         - name: "ZBX_HOSTNAME"
@@ -261,20 +262,11 @@ spec:
         ports:
         - containerPort: 10050
         env:
-          # Specify ZBX_SERVER_HOST  to set "Server"  & "ServerActive"
-          # Config  Lines.  Note  that  the iptables  voodoo makes  it
-          # practically impossible to determine  the source IP for the
-          # packets  that  will come  with  the  server passive  check
-          # requests.  So  you are  basically left with  active checks
-          # only or a very permissive Server directive.
+          # It is likely that "zabbix-server" will only resolve to the
+          # source IP of the Pod  if the Service named "zabbix-server"
+          # remains a Headless Server:
         - name: "ZBX_SERVER_HOST"
           value: "zabbix-server"
-          # ...    Unless   you   define   ZBX_PASSIVESERVERS   and/or
-          # ZBX_ACTIVESERVERS  explicitely.   FIXME:  this  is  *very*
-          # permissive and  likely break in Clusters  with non-default
-          # CIDRs:
-        - name: "ZBX_PASSIVESERVERS"
-          value: "10.42.0.0/16"
           # agent.hostname  =  system.hostname  by  default  which  is
           # random in Kubernetes. Unless you set it here:
         - name: "ZBX_HOSTNAME"
