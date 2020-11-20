@@ -267,6 +267,13 @@ spec:
           # remains a Headless Server:
         - name: "ZBX_SERVER_HOST"
           value: "zabbix-server"
+          # Hm,  allowing from  "zabbix-server" will  not do  it.  The
+          # problem is the IP packets arrive from the SRC IP 10.42.0.1
+          # of  cni0 interface,  not from  the zabbix-server  Pod.  Is
+          # this  a kind  of  SNAT at  work?  FIXME:  this  is a  very
+          # permissive setting:
+        - name: "ZBX_PASSIVESERVERS"
+          value: "10.42.0.0/16"
           # agent.hostname  =  system.hostname  by  default  which  is
           # random in Kubernetes. Unless you set it here:
         - name: "ZBX_HOSTNAME"
