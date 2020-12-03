@@ -46,7 +46,7 @@ spec:
         # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
         # -e MYSQL_PASSWORD="some-password" -d
         # zabbix/zabbix-server-mysql:tag
-        image: zabbix/zabbix-server-mysql:centos-5.0.5
+        image: zabbix/zabbix-server-mysql:centos-5.0.6
         #mage: registry.gitlab.com/f0bec0d/hello-zabbix:0.0.4
         imagePullPolicy: IfNotPresent
         ports:
@@ -75,7 +75,7 @@ spec:
         # ZBX_HOSTNAME="some-hostname" -e
         # ZBX_SERVER_HOST="some-zabbix-server" -d
         # zabbix/zabbix-agent:tag
-        image: zabbix/zabbix-agent:centos-5.0.5
+        image: zabbix/zabbix-agent:centos-5.0.6
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
@@ -144,7 +144,7 @@ spec:
         # ZBX_SERVER_HOST="some-zabbix-server" -e
         # PHP_TZ="some-timezone" -d zabbix/zabbix-web-apache-mysql:tag
       - name: zabbix-frontend
-        image: zabbix/zabbix-web-apache-mysql:centos-5.0.5
+        image: zabbix/zabbix-web-apache-mysql:centos-5.0.6
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -267,8 +267,8 @@ spec:
         # In  LTS  branch there  seems  to  be  a working  version  of
         # zabbix_agent2.
         #
-        image: zabbix/zabbix-agent2:alpine-5.0.4 # Go-agent
-        #image: zabbix/zabbix-agent:centos-5.0.5 # C-agent
+        image: zabbix/zabbix-agent2:alpine-5.0.6 # Go-agent
+        #image: zabbix/zabbix-agent:centos-5.0.6 # C-agent
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
