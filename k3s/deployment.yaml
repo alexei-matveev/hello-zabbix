@@ -311,18 +311,22 @@ spec:
 #
 #     http://zabbix.localhost
 #
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: zabbix
 spec:
   rules:
-  - host: zabbix.localhost
+  - host: "zabbix.localhost"
     http:
       paths:
-      - backend:
-          serviceName: zabbix-frontend
-          servicePort: 80
+      - path: "/"
+        pathType: "Prefix"
+        backend:
+          service:
+            name: "zabbix-frontend"
+            port:
+              number: 80
 ---
 # https://github.com/rancher/local-path-provisioner
 apiVersion: v1
