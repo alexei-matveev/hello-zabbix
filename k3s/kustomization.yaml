@@ -1,6 +1,4 @@
 # kubectl apply -k .
 namespace: "hello-zabbix"
-namePrefix: ""
-nameSuffix: ""
 resources:
   - deployment.yaml
