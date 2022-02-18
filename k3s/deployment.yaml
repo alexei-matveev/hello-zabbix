@@ -1,5 +1,5 @@
 #
-# kubectl apply --dry-run=server -k .
+# kubectl apply -k . --dry-run=server
 # kubectl apply -k .
 #
 # See Zabbix  [1] and Docker Hub  Pages for Server [2],  Frontend [3],
@@ -47,7 +47,7 @@ spec:
         # DB_SERVER_HOST="some-mysql-server" -e MYSQL_USER="some-user"
         # -e MYSQL_PASSWORD="some-password" -d
         # zabbix/zabbix-server-mysql:tag
-        image: zabbix/zabbix-server-mysql:centos-5.4.0
+        image: zabbix/zabbix-server-mysql:alpine-6.0.0
         #mage: registry.gitlab.com/f0bec0d/hello-zabbix:0.0.4
         imagePullPolicy: IfNotPresent
         ports:
@@ -76,7 +76,7 @@ spec:
         # ZBX_HOSTNAME="some-hostname" -e
         # ZBX_SERVER_HOST="some-zabbix-server" -d
         # zabbix/zabbix-agent:tag
-        image: zabbix/zabbix-agent:centos-5.4.0
+        image: zabbix/zabbix-agent:alpine-6.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
@@ -133,7 +133,7 @@ spec:
         # ZBX_SERVER_HOST="some-zabbix-server" -e
         # PHP_TZ="some-timezone" -d zabbix/zabbix-web-apache-mysql:tag
       - name: zabbix-frontend
-        image: zabbix/zabbix-web-apache-mysql:centos-5.4.0
+        image: zabbix/zabbix-web-apache-mysql:alpine-6.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -196,13 +196,16 @@ spec:
         # docker run --name some-mysql -e
         # MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
         #
-        # With  v8.0  it my  happen  thata  the older  clients  cannot
-        # connect  because of  the  changed default  by password  hash
-        # algo.  Use  v5.7.  The CentOS based  zabbix server container
-        # image brings an older mysqladmin and likely other tools.
+        # With v8.0 it my happen that the older clients cannot connect
+        # because of  the changed default  by password hash  algo.  We
+        # used  v5.7 because  of thet.   Also the  older CentOS  based
+        # zabbix server  container image  brought an  older mysqladmin
+        # and likely other  tools.  At the latest with  v6.0 LTS there
+        # seem to be no CentOS Images anymore, we use Alpine. Also the
+        # Zabbix Server wants at least MySQL 8.
         #
       - name: zabbix-db
-        image: mysql:5.7.30
+        image: mysql:8.0.28
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
@@ -258,7 +261,7 @@ spec:
         # Also where are v5.2 images?  See the issue
         # https://github.com/zabbix/zabbix-docker/issues/758
         #
-        image: zabbix/zabbix-agent:centos-5.4.0 # C-agent, not Go-agent!
+        image: zabbix/zabbix-agent:alpine-6.0.0 # C-agent, not Go-agent!
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 10050
